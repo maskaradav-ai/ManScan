@@ -4,31 +4,31 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MeuScan - Início</title>
-
 <style>
 body {
     margin:0;
     font-family:Arial;
     background:#0e0e0e;
-    color:white
+    color:white;
+    overflow-x:hidden;
 }
 
 header {
     background:#151515;
     padding:15px 30px;
     display:flex;
-    justify-content:space-between
+    justify-content:space-between;
 }
 
 .logo {
     color:#00ff88;
-    font-weight:bold
+    font-weight:bold;
 }
 
 nav a {
     color:#ccc;
     text-decoration:none;
-    margin-left:20px
+    margin-left:20px;
 }
 
 nav a:hover {
@@ -69,56 +69,76 @@ footer {
     color:#777
 }
 
-/* ===== PERSONAGEM VIVA ===== */
-
-.personagem {
+/* ===== MASCOTE ===== */
+.mascote-container {
     position: fixed;
     bottom: 20px;
     left: -150px;
     width: 120px;
     pointer-events: none;
-    animation: passear 25s ease-in-out infinite;
+    animation: andar 25s linear infinite;
 }
 
-@keyframes passear {
-
-    0% {
-        left: -150px;
-        transform: translateY(0px) scaleX(1) scale(1);
-    }
-
-    20% {
-        transform: translateY(-10px) scaleX(1) scale(1.05);
-    }
-
-    45% {
-        left: 100%;
-        transform: translateY(0px) scaleX(1) scale(1);
-    }
-
-    50% {
-        left: 100%;
-        transform: translateY(0px) scaleX(-1) scale(1);
-    }
-
-    70% {
-        transform: translateY(-10px) scaleX(-1) scale(1.05);
-    }
-
-    95% {
-        left: -150px;
-        transform: translateY(0px) scaleX(-1) scale(1);
-    }
-
-    100% {
-        left: -150px;
-        transform: translateY(0px) scaleX(1) scale(1);
-    }
+.mascote {
+    width: 100%;
+    display: block;
+    animation: flutuar 3s ease-in-out infinite alternate, respirar 2s ease-in-out infinite;
 }
 
+/* MOVIMENTO MASCOTE */
+@keyframes andar {
+    0% { left: -150px; transform: scaleX(1); }
+    45% { left: 100%; transform: scaleX(1); }
+    50% { left: 100%; transform: scaleX(-1); }
+    95% { left: -150px; transform: scaleX(-1); }
+    100% { left: -150px; transform: scaleX(1); }
+}
+
+@keyframes flutuar {
+    from { transform: translateY(0px); }
+    to { transform: translateY(-8px); }
+}
+
+@keyframes respirar {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.03); }
+    100% { transform: scale(1); }
+}
+
+/* ===== BRILHINHOS ===== */
+.brilho {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background: gold;
+    border-radius: 50%;
+    pointer-events: none;
+    animation: brilho 2s infinite;
+}
+
+@keyframes brilho {
+    0% { opacity: 0; transform: scale(0.5); }
+    50% { opacity: 1; transform: scale(1); }
+    100% { opacity: 0; transform: scale(0.5); }
+}
+
+/* ===== BALÃO ===== */
+.balao {
+    position: absolute;
+    bottom: 140px;
+    left: 0;
+    background: white;
+    color: black;
+    padding: 8px 12px;
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: bold;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s;
+}
 </style>
 </head>
-
 <body>
 
 <header>
@@ -141,7 +161,36 @@ footer {
 
 <footer>© 2026 MeuScan</footer>
 
-<img src="kaguyakawai.png" class="personagem">
+<!-- ===== MASCOTE ===== -->
+<div class="mascote-container" id="mascote-container">
+    <img src="kaguyakawai.png" class="mascote" id="mascote">
+    <div class="balao" id="balao">Bem-vindo!</div>
+</div>
+
+<!-- Brilhinhos -->
+<div class="brilho" style="bottom: 170px; left: 20px;"></div>
+<div class="brilho" style="bottom: 180px; left: 60px;"></div>
+<div class="brilho" style="bottom: 160px; left: 100px;"></div>
+
+<script>
+// ===== PISCAR OLHOS REAL =====
+const mascote = document.getElementById("mascote");
+
+// Troca de PNG para simular piscar
+setInterval(() => {
+    mascote.src = "kaguyakawai_olhos_fechados.png";
+    setTimeout(() => {
+        mascote.src = "kaguyakawai.png";
+    }, 150);
+}, 4000);
+
+// ===== BALÃO =====
+const balao = document.getElementById("balao");
+setInterval(() => {
+    balao.style.opacity = 1;
+    setTimeout(() => { balao.style.opacity = 0; }, 2500);
+}, 8000);
+</script>
 
 </body>
 </html>
