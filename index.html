@@ -22,13 +22,47 @@ footer{background:#151515;text-align:center;padding:15px;color:#777}
     bottom: 20px;
     left: -150px;
     width: 120px;
-    animation: passear 20s linear infinite;
     pointer-events: none;
+    animation: andar 30s linear infinite,
+               flutuar 3s ease-in-out infinite alternate,
+               respirar 2s ease-in-out infinite;
 }
 
-@keyframes passear {
-    0% { left: -150px; }
-    100% { left: 110%; }
+/* Movimento de ida e volta */
+@keyframes andar {
+    0% {
+        left: -150px;
+        transform: scaleX(1);
+    }
+    45% {
+        left: 100%;
+        transform: scaleX(1);
+    }
+    50% {
+        left: 100%;
+        transform: scaleX(-1); /* vira */
+    }
+    95% {
+        left: -150px;
+        transform: scaleX(-1);
+    }
+    100% {
+        left: -150px;
+        transform: scaleX(1);
+    }
+}
+
+/* Flutuar */
+@keyframes flutuar {
+    from { transform: translateY(0px); }
+    to { transform: translateY(-12px); }
+}
+
+/* Respirar */
+@keyframes respirar {
+    0% { scale: 1; }
+    50% { scale: 1.03; }
+    100% { scale: 1; }
 }
   
 </style>
