@@ -77,6 +77,9 @@ footer {
     width: 120px;
     pointer-events: none;
     animation: andar 25s linear infinite;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .mascote {
@@ -105,28 +108,8 @@ footer {
     100% { transform: scale(1); }
 }
 
-/* ===== BRILHINHOS ===== */
-.brilho {
-    position: absolute;
-    width: 10px;
-    height: 10px;
-    background: gold;
-    border-radius: 50%;
-    pointer-events: none;
-    animation: brilho 2s infinite;
-}
-
-@keyframes brilho {
-    0% { opacity: 0; transform: scale(0.5); }
-    50% { opacity: 1; transform: scale(1); }
-    100% { opacity: 0; transform: scale(0.5); }
-}
-
 /* ===== BALÃO ===== */
 .balao {
-    position: absolute;
-    bottom: 140px;
-    left: 0;
     background: white;
     color: black;
     padding: 8px 12px;
@@ -136,7 +119,27 @@ footer {
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.5s;
+    margin-bottom: 5px;
 }
+
+/* ===== BRILHINHOS ===== */
+.brilho {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background: gold;
+    border-radius: 50%;
+    pointer-events: none;
+    animation: brilho 2s infinite;
+    transform-origin: center;
+}
+
+@keyframes brilho {
+    0% { opacity: 0; transform: scale(0.5); }
+    50% { opacity: 1; transform: scale(1); }
+    100% { opacity: 0; transform: scale(0.5); }
+}
+
 </style>
 </head>
 <body>
@@ -163,33 +166,56 @@ footer {
 
 <!-- ===== MASCOTE ===== -->
 <div class="mascote-container" id="mascote-container">
-    <img src="kaguyakawai.png" class="mascote" id="mascote">
     <div class="balao" id="balao">Bem-vindo!</div>
+    <img src="kaguyakawai.png" class="mascote" id="mascote">
 </div>
 
 <!-- Brilhinhos -->
-<div class="brilho" style="bottom: 170px; left: 20px;"></div>
-<div class="brilho" style="bottom: 180px; left: 60px;"></div>
-<div class="brilho" style="bottom: 160px; left: 100px;"></div>
+<div class="brilho" id="brilho1"></div>
+<div class="brilho" id="brilho2"></div>
+<div class="brilho" id="brilho3"></div>
 
 <script>
-// ===== PISCAR OLHOS REAL =====
+// ===== MASCOTE =====
 const mascote = document.getElementById("mascote");
+const container = document.getElementById("mascote-container");
+const balao = document.getElementById("balao");
 
-// Troca de PNG para simular piscar
+// ===== BRILHINHOS SEGUINDO A MASCOTE =====
+const brilhos = [
+    document.getElementById("brilho1"),
+    document.getElementById("brilho2"),
+    document.getElementById("brilho3")
+];
+
+function atualizarBrilhos() {
+    const rect = container.getBoundingClientRect();
+    brilhos[0].style.left = rect.left + 10 + "px";
+    brilhos[0].style.top = rect.top - 20 + "px";
+    brilhos[1].style.left = rect.left + 50 + "px";
+    brilhos[1].style.top = rect.top - 15 + "px";
+    brilhos[2].style.left = rect.left + 90 + "px";
+    brilhos[2].style.top = rect.top - 25 + "px";
+}
+setInterval(atualizarBrilhos, 50);
+
+// ===== PISCAR OLHOS REAL =====
 setInterval(() => {
     mascote.src = "kaguyakawai_olhos_fechados.png";
-    setTimeout(() => {
-        mascote.src = "kaguyakawai.png";
-    }, 150);
+    setTimeout(() => { mascote.src = "kaguyakawai.png"; }, 150);
 }, 4000);
 
 // ===== BALÃO =====
-const balao = document.getElementById("balao");
-setInterval(() => {
+function atualizarBalao() {
+    // Ajusta direção
+    const transform = getComputedStyle(container).transform;
+    const scaleX = transform.includes("-1") ? -1 : 1;
+    balao.style.transform = scaleX === -1 ? "scaleX(-1)" : "scaleX(1)";
     balao.style.opacity = 1;
     setTimeout(() => { balao.style.opacity = 0; }, 2500);
-}, 8000);
+}
+setInterval(atualizarBalao, 8000);
+
 </script>
 
 </body>
